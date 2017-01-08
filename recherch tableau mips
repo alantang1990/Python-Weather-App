@@ -1,0 +1,41 @@
+.data 
+Tab: .Word 6,5,7,-9,3,2
+Mess:  .asciiz "donnez une valeur :  \n"
+Mess2: .asciiz "votre entré est trouvé \n"
+Mess3: .asciiz "Non trouvé\n"
+.text
+	main: li $v0,4
+	li $a0, Mess
+	syscall
+	
+	li $v0,5
+	syscall
+	mov $t1,$v0
+	
+	la $t2, Tab
+	li $t5, 6
+	li $t4 , 1
+	
+	retour: bgt $t4,$t5, sortie
+	lw $t6, ($t2)
+	beq $t1 , $t6 ,trouve
+	Addi $t2, $t2, 4			
+	Addi $t4, $t4, 1
+	j retour
+
+	sortie: 
+	li $v0,4
+	li $a0, Mess3
+	syscall
+	j fin
+
+	trouve: li $v0,4
+	li $a0, Mess2
+	syscall
+  
+	li $v0,1
+	move $a0, $t4
+	syscall
+	
+	fin: li $v0,10
+	syscall
